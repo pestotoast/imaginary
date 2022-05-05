@@ -30,13 +30,11 @@ jobs:
           go-version: "1.17"
 
       - name: Update modules # https://github.com/h2non/imaginary/issues/387
-        working-directory: imaginary
         run: |
           sed -i 's/bimg v1.1.4/bimg v1.1.7/' go.mod
           go mod tidy
 
       - name: Skip tests # https://github.com/golang/go/issues/29948
-        working-directory: imaginary
         run: |
           sed -i 's/RUN go test/# RUN go test/' Dockerfile
           sed -i 's/RUN golangci/# RUN golangci/' Dockerfile
@@ -44,7 +42,6 @@ jobs:
       - name: Build image 'imaginary'
         uses: docker/build-push-action@v2
         with:
-          context: imaginary
           platforms: linux/amd64
           cache-from: type=gha,scope=imaginary
           cache-to: type=gha,scope=imaginary
